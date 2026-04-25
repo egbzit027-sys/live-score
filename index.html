@@ -30,21 +30,7 @@ h2{
     font-size:14px;
     color:#a5b4fc;
 }
-    const API_KEY = "f9884b26-475d-4d10-80d4-d0d4a2c17e6d";
-
-fetch("https://api.cricketdata.org/v1/currentMatches?apikey=" + API_KEY)
-.then(res => res.json())
-.then(data => {
-    console.log(data);
-
-    const match = data?.data?.[0];
-
-    document.getElementById("match").innerHTML =
-        match ? match.name : "No live match";
-})
-.catch(err => {
-    console.log("Error:", err);
-});
+    
 </style>
 </head>
 
