@@ -1,34 +1,31 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<h2>LIVE SCORE</h2>
+<div id="score">Loading...</div>
+
 <script>
-async function getScore() {
-  try {
-    let res = await fetch("https://cricketdata.org/member.aspx?apikey=f9884b26-475d-4d10-80d4-d0d4a2c17e6d");
-    let data = await res.json();
+const API_KEY = "YOUR_API_KEY";
 
-    if(data.data && data.data.length > 0){
-      let match = data.data[0];
+fetch(`https://api.cricketdata.org/v1/currentMatches?apikey=${API_KEY}`)
+.then(res => res.json())
+.then(data => {
+    console.log(data);
 
-      let scoreText = "No score yet";
-
-      if(match.score && match.score.length > 0){
-        scoreText = match.score.map(s => 
-          s.inning + ": " + s.r + "/" + s.w + " (" + s.o + ")"
-        ).join("<br>");
-      }
-
-      document.getElementById("score").innerHTML =
-        match.t1 + " vs " + match.t2 + "<br><br>" +
-        scoreText + "<br><br>" +
-        match.status;
-
+    // example safe output
+    if (data && data.data && data.data.length > 0) {
+        const match = data.data[0];
+        document.getElementById("score").innerText =
+            `${match.name} | ${match.status}`;
     } else {
-      document.getElementById("score").innerHTML = "No Live Match";
+        document.getElementById("score").innerText = "No live match";
     }
-
-  } catch(e){
-    document.getElementById("score").innerHTML = "Error loading score";
-  }
-}
-
-setInterval(getScore, 5000);
-getScore();
+})
+.catch(err => {
+    document.getElementById("score").innerText = "Error loading score";
+});
 </script>
+
+</body>
+</html>
