@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Live Cricket Score</title>
+<style>
+body {
+  margin:0;
+  font-family: Arial;
+  background:#111;
+  color:#fff;
+  text-align:center;
+}
+.box {
+  padding:20px;
+}
+h1 {color:#00ffcc;}
+</style>
+</head>
+<body>
+<div class="box">
+  <h1>LIVE SCORE</h1>
+  <div id="score">Loading...</div>
+  <p>MD SHARIFUL ISLAM</p>
+</div>
+
+<script>
+async function getScore() {
+  try {
+    let res = await fetch("https://api.cricapi.com/v1/cricScore?apikey=demo");
+    let data = await res.json();
+
+    if(data.data && data.data.length > 0){
+      let match = data.data[0];
+      document.getElementById("score").innerHTML =
+        match.t1 + " vs " + match.t2 + "<br>" +
+        match.score + "<br>" +
+        match.status;
+    } else {
+      document.getElementById("score").innerHTML = "No Live Match";
+    }
+  } catch(e){
+    document.getElementById("score").innerHTML = "Error loading score";
+  }
+}
+
+setInterval(getScore, 5000);
+getScore();
+</script>
+</body>
+</html>
